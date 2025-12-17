@@ -8,7 +8,7 @@ const Header: React.FC = () => {
           {/* Logo con tamaño w-64 h-64 */}
           <div>
             <img 
-              src="/topomin.png" 
+              src="/topomin.svg" 
               alt="Logo INHGEOMIN" 
               className="w-64 h-64 object-contain"
             />
