@@ -471,13 +471,13 @@ const MiningCalculator: React.FC = () => {
       return requirementLinks.pequena_mineria_no_metalica;
     }
     if (isOroPlacer) {
-      return 'https://inhgeomin.gob.hn/permisos-de-pequena-mineria-metalica/';
+      return 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa';
     }
     if (isAutomatizado) {
-      return 'https://inhgeomin.gob.hn/concesion-minera-de-explotacion/';
+      return 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-explotaci%C3%B3n';
     }
     if (isManualBasico || isMecanizado) {
-      return 'https://inhgeomin.gob.hn/permisos-de-pequena-mineria-metalica/';
+      return 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa';
     }
     return requirementLinks[formData.activity as keyof typeof requirementLinks] || requirementLinks.extraccion;
   };

@@ -57,14 +57,14 @@ export const extractionZoneOptions = [
 ];
 
 export const requirementLinks = {
-  prospeccion: 'https://inhgeomin.gob.hn/concesiones-mineras-de-exploracion/',
-  extraccion: 'https://inhgeomin.gob.hn/concesion-minera-de-explotacion/',
-  comercializacion: 'https://inhgeomin.gob.hn/comercializacion-de-minerales/',
-  procesamiento: 'https://inhgeomin.gob.hn/concesion-minera-de-beneficio/',
-  desazolvamiento: 'https://inhgeomin.gob.hn/proyectos-de-desazolvamiento/',
-  banco_materiales: 'https://inhgeomin.gob.hn/bancos-de-materiales/',
-  artesanal: 'https://inhgeomin.gob.hn/adjudicacion-de-area-de-mineria-artesanal/',
-  pequena_mineria_no_metalica: 'https://inhgeomin.gob.hn/adjudicacion-de-area-para-pequena-mineria-no-metalica/'
+  prospeccion: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-exploraci%C3%B3n',
+  extraccion: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-explotaci%C3%B3n',
+  comercializacion: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/registro-de-comercializador-de-minerales',
+  procesamiento: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-beneficio',
+  desazolvamiento: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/proyecto-de-desazolvamiento',
+  banco_materiales: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/proyectos-de-banco-de-materiales',
+  artesanal: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa',
+  pequena_mineria_no_metalica: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa'
 };
 
 export const activityDescriptions = {
