@@ -68,3 +68,4 @@ Después de unos minutos, tu sitio estará disponible en la URL que indique GitH
 - El favicon (`vite.svg`) usa una ruta **relativa**, por lo que también funciona correctamente dentro de GitHub Pages.
 
 
+
