@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../assets/topomin.svg';
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +8,7 @@ const Header: React.FC = () => {
           {/* Logo con tamaño w-64 h-64 */}
           <div>
             <img 
-              src={logo} 
+              src="./topomin.svg" 
               alt="Logo INHGEOMIN" 
               className="w-64 h-64 object-contain"
             />
