@@ -18,8 +18,6 @@ const Header: React.FC = () => {
       {/* Botón SIGEM en la esquina superior izquierda */}
       <a
         href="https://flavio1227.github.io/SIGEM1.1/"
-        target="_blank"
-        rel="noopener noreferrer"
         className="absolute top-4 left-4 px-3 py-2 text-custom-yellow text-sm font-medium border border-custom-yellow rounded hover:bg-custom-yellow hover:text-custom-blue transition-all duration-200"
         title="Ir a SIGEM"
       >
