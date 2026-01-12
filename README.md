@@ -62,10 +62,44 @@ Este proyecto ya está configurado para que Vite genere los archivos estáticos 
 
 Después de unos minutos, tu sitio estará disponible en la URL que indique GitHub Pages.
 
+### Configuración de Firebase Authentication
+
+Este proyecto requiere autenticación con Firebase. Para configurarlo:
+
+1. Crea un proyecto en [Firebase Console](https://console.firebase.google.com/)
+
+2. Habilita **Authentication** en Firebase Console y configura los métodos de autenticación que necesites (Email/Password, Google, etc.)
+
+3. Obtén las credenciales de tu proyecto Firebase (Configuración del proyecto → Configuración general → Tus aplicaciones)
+
+4. Crea un archivo `.env` en la raíz del proyecto (copia de `.env.example`):
+
+   ```bash
+   cp .env.example .env
+   ```
+
+5. Actualiza el archivo `.env` con tus credenciales de Firebase:
+
+   ```
+   VITE_FIREBASE_API_KEY=tu-api-key
+   VITE_FIREBASE_AUTH_DOMAIN=tu-proyecto.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=tu-proyecto-id
+   VITE_FIREBASE_STORAGE_BUCKET=tu-proyecto.appspot.com
+   VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+   VITE_FIREBASE_APP_ID=tu-app-id
+   ```
+
+6. **Nota sobre el login externo**: Este proyecto está configurado para redirigir a `https://flavio1227.github.io/Login/` si el usuario no está autenticado. Para que funcione correctamente, el sistema de login externo debe:
+
+   - Usar Firebase Authentication
+   - Después del login exitoso, redirigir de vuelta a esta aplicación con las credenciales de Firebase
+   - O compartir la sesión de Firebase entre dominios (requiere configuración adicional)
+
 ### Notas importantes
 
 - El `base` de Vite está configurado como `./` para que funcione correctamente tanto en servidores como en GitHub Pages.
 - El favicon (`vite.svg`) usa una ruta **relativa**, por lo que también funciona correctamente dentro de GitHub Pages.
+- **Seguridad**: El archivo `.env` NO se sube a GitHub (está en `.gitignore`). Para producción, configura las variables de entorno en tu plataforma de despliegue.
 
 
 
