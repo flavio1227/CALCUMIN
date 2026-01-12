@@ -6,37 +6,12 @@ interface ProtectedRouteProps {
 
 const LOGIN_URL = 'https://flavio1227.github.io/Login/';
 const AUTH_TOKEN_KEY = 'auth_token';
-const AUTH_CHECK_INTERVAL = 30000; // 30 segundos
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Verificar si hay token de autenticación en localStorage
-    const checkAuth = () => {
-      const token = localStorage.getItem(AUTH_TOKEN_KEY);
-      const hasAuth = token !== null && token !== '';
-      setIsAuthenticated(hasAuth);
-      
-      if (!hasAuth) {
-        // Guardar la URL actual para redirigir después del login
-        sessionStorage.setItem('redirectAfterLogin', window.location.href);
-        // Redirigir al login externo
-        window.location.href = LOGIN_URL;
-      }
-    };
-
-    // Verificar inmediatamente
-    checkAuth();
-
-    // Verificar periódicamente (por si el token se elimina en otra pestaña)
-    const interval = setInterval(checkAuth, AUTH_CHECK_INTERVAL);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Verificar si viene de un redirect del login (parámetros en URL)
-  useEffect(() => {
+    // Primero verificar si viene de un redirect del login (parámetros en URL)
     const urlParams = new URLSearchParams(window.location.search);
     const authToken = urlParams.get('token');
     const authSuccess = urlParams.get('auth') === 'success';
@@ -46,16 +21,28 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       if (authToken) {
         localStorage.setItem(AUTH_TOKEN_KEY, authToken);
       } else if (authSuccess) {
-        // Si viene con auth=success pero sin token, asumimos que el login externo maneja la sesión
         localStorage.setItem(AUTH_TOKEN_KEY, 'authenticated');
       }
       
       // Limpiar parámetros de la URL
-      const redirectUrl = sessionStorage.getItem('redirectAfterLogin') || window.location.origin + window.location.pathname;
-      sessionStorage.removeItem('redirectAfterLogin');
-      window.history.replaceState({}, '', redirectUrl);
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, '', cleanUrl);
       
       setIsAuthenticated(true);
+      return;
+    }
+
+    // Si no viene del login, verificar si hay token en localStorage
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    const hasAuth = token !== null && token !== '';
+    
+    if (hasAuth) {
+      setIsAuthenticated(true);
+    } else {
+      // Guardar la URL actual para redirigir después del login
+      sessionStorage.setItem('redirectAfterLogin', window.location.href);
+      // Redirigir al login externo
+      window.location.href = LOGIN_URL;
     }
   }, []);
 
@@ -71,7 +58,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
-  // Si no está autenticado, no mostrar nada (ya se redirigió)
+  // Si no está autenticado, mostrar mensaje (ya se redirigió)
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-custom-blue flex items-center justify-center">
