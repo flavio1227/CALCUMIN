@@ -5,45 +5,82 @@ interface ProtectedRouteProps {
 }
 
 const LOGIN_URL = 'https://flavio1227.github.io/Login/';
-const AUTH_TOKEN_KEY = 'auth_token';
+// Claves comunes que SIGEM1.1 podría usar para almacenar la autenticación
+const AUTH_KEYS = [
+  'auth_token',
+  'authToken',
+  'isAuthenticated',
+  'userToken',
+  'sessionToken',
+  'token',
+  'authenticated'
+];
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Primero verificar si viene de un redirect del login (parámetros en URL)
-    const urlParams = new URLSearchParams(window.location.search);
-    const authToken = urlParams.get('token');
-    const authSuccess = urlParams.get('auth') === 'success';
+    const checkAuthentication = () => {
+      // Primero verificar si viene de un redirect del login (parámetros en URL)
+      const urlParams = new URLSearchParams(window.location.search);
+      const authToken = urlParams.get('token');
+      const authSuccess = urlParams.get('auth') === 'success';
 
-    if (authToken || authSuccess) {
-      // Guardar token si viene del login
-      if (authToken) {
-        localStorage.setItem(AUTH_TOKEN_KEY, authToken);
-      } else if (authSuccess) {
-        localStorage.setItem(AUTH_TOKEN_KEY, 'authenticated');
+      if (authToken || authSuccess) {
+        // Guardar token si viene del login
+        if (authToken) {
+          localStorage.setItem('auth_token', authToken);
+        } else if (authSuccess) {
+          localStorage.setItem('auth_token', 'authenticated');
+        }
+        
+        // Limpiar parámetros de la URL
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+        
+        setIsAuthenticated(true);
+        return;
+      }
+
+      // Verificar si hay algún token de autenticación en localStorage (compartido con SIGEM1.1)
+      let hasAuth = false;
+      
+      // Verificar las claves comunes
+      for (const key of AUTH_KEYS) {
+        const value = localStorage.getItem(key);
+        if (value !== null && value !== '' && value !== 'false' && value !== 'null') {
+          hasAuth = true;
+          break;
+        }
       }
       
-      // Limpiar parámetros de la URL
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, '', cleanUrl);
+      // También verificar sessionStorage
+      if (!hasAuth) {
+        for (const key of AUTH_KEYS) {
+          const value = sessionStorage.getItem(key);
+          if (value !== null && value !== '' && value !== 'false' && value !== 'null') {
+            hasAuth = true;
+            break;
+          }
+        }
+      }
       
-      setIsAuthenticated(true);
-      return;
-    }
+      if (hasAuth) {
+        setIsAuthenticated(true);
+      } else {
+        // Guardar la URL actual para redirigir después del login
+        sessionStorage.setItem('redirectAfterLogin', window.location.href);
+        // Redirigir al login
+        window.location.href = LOGIN_URL;
+      }
+    };
 
-    // Si no viene del login, verificar si hay token en localStorage
-    const token = localStorage.getItem(AUTH_TOKEN_KEY);
-    const hasAuth = token !== null && token !== '';
+    checkAuthentication();
     
-    if (hasAuth) {
-      setIsAuthenticated(true);
-    } else {
-      // Guardar la URL actual para redirigir después del login
-      sessionStorage.setItem('redirectAfterLogin', window.location.href);
-      // Redirigir al login externo
-      window.location.href = LOGIN_URL;
-    }
+    // Verificar periódicamente por si el token se actualiza
+    const interval = setInterval(checkAuthentication, 2000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   // Mostrar carga mientras verifica
