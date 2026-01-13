@@ -101,16 +101,7 @@ export function requireAuthToken(
  * @returns true si está autenticado, false si no
  */
 export function isAuthenticated(): boolean {
-  try {
-    const authInstance = getAuth();
-    const user = authInstance.currentUser;
-    if (user) {
-      return true;
-    }
-  } catch (error) {
-    // Ignorar errores de Firebase
-  }
-  
+  // Solo verificar tokens en storage, no usar Firebase para evitar problemas durante el build
   return hasAuthToken();
 }
 
