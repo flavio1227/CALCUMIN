@@ -13,27 +13,29 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Verificar si viene desde SIGEM1.1 (referrer)
+    // Verificar si viene desde SIGEM1.1 (referrer o parámetros en URL)
     const referrer = document.referrer;
-    const comesFromSigem = referrer.includes('SIGEM1.1') || referrer.includes('sigem');
+    const urlParams = new URLSearchParams(window.location.search);
+    const comesFromSigem = referrer.includes('SIGEM1.1') || referrer.includes('sigem') || urlParams.has('fromSigem');
     
-    // Dar un pequeño delay si viene desde SIGEM1.1 para que los tokens se carguen
-    const checkDelay = comesFromSigem ? 500 : 0;
+    // Si viene desde SIGEM1.1, permitir acceso directamente (SIGEM1.1 ya controla el acceso)
+    if (comesFromSigem) {
+      setIsAuthenticated(true);
+      return;
+    }
     
-    setTimeout(() => {
-      if (isAuthenticated()) {
-        // Usuario autenticado, permitir acceso
-        setIsAuthenticated(true);
-      } else {
-        // No autenticado, usar el helper para redirigir
-        requireAuthToken(
-          () => {
-            setIsAuthenticated(true);
-          },
-          'https://flavio1227.github.io/Login/'
-        );
-      }
-    }, checkDelay);
+    // Si NO viene desde SIGEM1.1, verificar autenticación con tokens
+    if (isAuthenticated()) {
+      setIsAuthenticated(true);
+    } else {
+      // No autenticado, redirigir al login
+      requireAuthToken(
+        () => {
+          setIsAuthenticated(true);
+        },
+        'https://flavio1227.github.io/Login/'
+      );
+    }
   }, []);
 
   // Mostrar carga mientras verifica
