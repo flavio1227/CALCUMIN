@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { requireAuthToken, isAuthenticated } from '../utils/authGuard';
+import { requireAuthToken, isAuthenticated as checkAuth } from '../utils/authGuard';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     }
     
     // Si NO viene desde SIGEM1.1, verificar autenticación con tokens
-    if (isAuthenticated()) {
+    if (checkAuth()) {
       setIsAuthenticated(true);
     } else {
       // No autenticado, redirigir al login
