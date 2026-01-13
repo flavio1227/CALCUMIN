@@ -19,7 +19,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         // Usuario autenticado, permitir acceso
         setIsAuthenticated(true);
       },
-      'https://flavio1227.github.io/SIGEM1.1/' // Redirigir a la shell si no está autenticado
+      'https://flavio1227.github.io/Login/' // Redirigir al LOGIN si no está autenticado
     );
   }, []);
 
