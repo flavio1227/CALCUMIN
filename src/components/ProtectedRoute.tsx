@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { requireAuthToken } from '../utils/authGuard';
+import { requireAuthToken, isAuthenticated } from '../utils/authGuard';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -13,14 +13,27 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Usar el helper reutilizable para verificar autenticación
-    requireAuthToken(
-      () => {
+    // Verificar si viene desde SIGEM1.1 (referrer)
+    const referrer = document.referrer;
+    const comesFromSigem = referrer.includes('SIGEM1.1') || referrer.includes('sigem');
+    
+    // Dar un pequeño delay si viene desde SIGEM1.1 para que los tokens se carguen
+    const checkDelay = comesFromSigem ? 500 : 0;
+    
+    setTimeout(() => {
+      if (isAuthenticated()) {
         // Usuario autenticado, permitir acceso
         setIsAuthenticated(true);
-      },
-      'https://flavio1227.github.io/Login/' // Redirigir al LOGIN si no está autenticado
-    );
+      } else {
+        // No autenticado, usar el helper para redirigir
+        requireAuthToken(
+          () => {
+            setIsAuthenticated(true);
+          },
+          'https://flavio1227.github.io/Login/'
+        );
+      }
+    }, checkDelay);
   }, []);
 
   // Mostrar carga mientras verifica
