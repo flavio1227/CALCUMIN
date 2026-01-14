@@ -606,17 +606,17 @@ const MiningCalculator: React.FC = () => {
 
         {showResult && (
           <>
-            <div className="no-print p-6 border-t border-custom-yellow">
-              <div className="bg-white p-4 rounded-lg border border-custom-yellow">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Resultado del Cálculo</h3>
+            <div className="no-print p-6 border-t border-gray-200">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Resultado del Cálculo</h3>
                 
                 {/* Alerta sobre dónde realizar el trámite */}
-                <div className={`mb-4 p-3 rounded-lg border ${
+                <div className={`mb-4 p-4 rounded-lg border ${
                   getTramiteLocation() === 'municipalidades' 
-                    ? 'bg-orange-50 border-orange-300 text-orange-800' 
-                    : 'bg-blue-50 border-blue-300 text-blue-800'
+                    ? 'bg-orange-50/50 border-orange-200 text-orange-900' 
+                    : 'bg-blue-50/50 border-blue-200 text-blue-900'
                 }`}>
-                  <p className="font-semibold">
+                  <p className="font-medium">
                     📍 Lugar donde realizar el trámite: {
                       getTramiteLocation() === 'municipalidades' 
                         ? 'MUNICIPALIDADES' 
@@ -627,65 +627,66 @@ const MiningCalculator: React.FC = () => {
 
                 {/* Nueva alerta para grupos organizados */}
                 {isOroPlacer && formData.production === 'grupo_30m3' && (
-                  <div className="mb-4 p-3 rounded-lg border bg-yellow-50 border-yellow-300 text-yellow-800">
-                    <p className="font-semibold">
+                  <div className="mb-4 p-4 rounded-lg border bg-yellow-50/50 border-yellow-200 text-yellow-900">
+                    <p className="font-medium">
                       👥 Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado
                     </p>
                   </div>
                 )}
 
-                <div className="space-y-4 text-gray-800">
-                  <p className="font-semibold">🏷️ Tipo de Derecho Minero: {getGrantType()}</p>
+                <div className="space-y-5 text-gray-800">
+                  <p className="font-semibold text-gray-900 text-lg">🏷️ Tipo de Derecho Minero: {getGrantType()}</p>
                   {getSmallMiningDescription() && (
-                    <p className="text-gray-600 italic">{getSmallMiningDescription()}</p>
+                    <p className="text-gray-600 leading-relaxed">{getSmallMiningDescription()}</p>
                   )}
                   {getExplorationDescription() && (
-                    <p className="text-gray-600 italic whitespace-pre-line">{getExplorationDescription()}</p>
+                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">{getExplorationDescription()}</p>
                   )}
                   {getExploitationDescription() && (
-                    <p className="text-gray-600 italic whitespace-pre-line">{getExploitationDescription()}</p>
+                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">{getExploitationDescription()}</p>
                   )}
                   {getArtesanalDescription() && (
-                    <p className="text-gray-600 italic whitespace-pre-line">{getArtesanalDescription()}</p>
+                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">{getArtesanalDescription()}</p>
                   )}
                   {isDesazolvamiento && (
-                    <p className="text-gray-600 italic">Limpiar ríos o cauces para prevenir inundaciones, bajo normas técnicas.</p>
+                    <p className="text-gray-600 leading-relaxed">Limpiar ríos o cauces para prevenir inundaciones, bajo normas técnicas.</p>
                   )}
                   {isBancoMateriales && (
-                    <p className="text-gray-600 italic">{activityDescriptions.banco_materiales}</p>
+                    <p className="text-gray-600 leading-relaxed">{activityDescriptions.banco_materiales}</p>
                   )}
                   {isProcesamiento && (
-                    <p className="text-gray-600 italic">La minera de beneficio para realizar procesos físicos, químicos y/o fisicoquímicos, que se realizan para extraer o concentrar las partes valiosas de un agregado de minerales metálicos, no metálicos, gemas y/o para purificar, fundir o refinar metales.<br/><br/>La concesión de beneficio es obligatoria para aquellos que, no siendo titulares de una concesión minera de explotación, capten minerales o productos intermedios, minerales de concesionarios y terceros con el fin de beneficiarlos.</p>
+                    <p className="text-gray-600 leading-relaxed">La minera de beneficio para realizar procesos físicos, químicos y/o fisicoquímicos, que se realizan para extraer o concentrar las partes valiosas de un agregado de minerales metálicos, no metálicos, gemas y/o para purificar, fundir o refinar metales.<br/><br/>La concesión de beneficio es obligatoria para aquellos que, no siendo titulares de una concesión minera de explotación, capten minerales o productos intermedios, minerales de concesionarios y terceros con el fin de beneficiarlos.</p>
                   )}
                   {isComercializacion && (
-                    <p className="text-gray-600 italic">El Registro de Comercializador de Mineriales a fin de poder realizar actividades de compra y venta de minerales metálicos, no metálicos, de gemas o piedras preciosas, para transformarlos, beneficiarlos, distribuirlos o exportarlos.</p>
+                    <p className="text-gray-600 leading-relaxed">El Registro de Comercializador de Mineriales a fin de poder realizar actividades de compra y venta de minerales metálicos, no metálicos, de gemas o piedras preciosas, para transformarlos, beneficiarlos, distribuirlos o exportarlos.</p>
                   )}
                   
                   {!isDesazolvamiento && !isComercializacion && !isBancoMateriales && !isProcesamiento && (
                     <>
-                
-                      <p>📋 Parámetros seleccionados:</p>
-                      <ul className="list-disc list-inside space-y-2 ml-4">
-                        <li>🔹 Sustancia de interés: {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
-                        <li>🔹 Actividad: {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
-                        {!isComercializacion && !isProcesamiento && (
-                          <>
-                            <li>🔹 Tipo de depósito mineral: {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
-                            <li>🔹 Extensión: {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
-                            <li>🔹 Capacidad de producción: {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
-                            <li>🔹 Método de extracción: {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
-                          </>
-                        )}
-                      </ul>
+                      <div className="pt-2">
+                        <p className="font-semibold text-gray-900 mb-3">📋 Parámetros seleccionados:</p>
+                        <ul className="list-disc list-inside space-y-2.5 ml-4 text-gray-700">
+                          <li>🔹 Sustancia de interés: {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
+                          <li>🔹 Actividad: {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
+                          {!isComercializacion && !isProcesamiento && (
+                            <>
+                              <li>🔹 Tipo de depósito mineral: {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
+                              <li>🔹 Extensión: {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
+                              <li>🔹 Capacidad de producción: {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
+                              <li>🔹 Método de extracción: {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
+                            </>
+                          )}
+                        </ul>
+                      </div>
                     </>
                   )}
 
                   <div className="mt-6">
-                    <h4 className="text-lg font-semibold mb-2">📝 Requisitos Principales:</h4>
+                    <h4 className="text-lg font-semibold mb-3 text-gray-900">📝 Requisitos Principales:</h4>
                     {isComercializacion && (
-                      <h5 className="text-md font-medium mb-3 text-gray-700">Artículo 43 del Reglamento de la Ley General de Minería</h5>
+                      <h5 className="text-base font-medium mb-3 text-gray-700">Artículo 43 del Reglamento de la Ley General de Minería</h5>
                     )}
-                    <ul className="list-disc list-inside space-y-1 ml-4">
+                    <ul className="list-disc list-inside space-y-2 ml-4 text-gray-700">
                       {getRequirements().map((req, index) => (
                         <li key={index}>{req}</li>
                       ))}
@@ -699,7 +700,7 @@ const MiningCalculator: React.FC = () => {
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <button
                       onClick={handlePrint}
-                      className="flex items-center justify-center gap-2 bg-custom-blue text-custom-yellow px-4 py-2 rounded border border-custom-yellow hover:bg-opacity-80 transition-colors focus:outline-none focus:ring-2 focus:ring-custom-yellow focus:ring-opacity-50 active:transform active:scale-95 min-h-[44px]"
+                      className="flex items-center justify-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-50 hover:border-gray-400 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 active:transform active:scale-98 min-h-[44px] font-medium"
                     >
                       <Printer size={20} />
                       Imprimir Resultado
@@ -709,7 +710,7 @@ const MiningCalculator: React.FC = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleExternalLink}
-                      className="flex items-center justify-center gap-2 bg-custom-blue text-custom-yellow px-4 py-2 rounded border border-custom-yellow hover:bg-opacity-80 transition-colors focus:outline-none focus:ring-2 focus:ring-custom-yellow focus:ring-opacity-50 active:transform active:scale-95 min-h-[44px]"
+                      className="flex items-center justify-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-50 hover:border-gray-400 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 active:transform active:scale-98 min-h-[44px] font-medium"
                     >
                       <ExternalLink size={20} />
                       Ver Requisitos Completos

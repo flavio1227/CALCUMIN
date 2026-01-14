@@ -9,6 +9,20 @@ export default {
           yellow: '#1F2937'     // NUEVO: gris oscuro | ORIGINAL: '#FFD700'
         }
       },
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"SF Pro Display"',
+          '"SF Pro Text"',
+          'system-ui',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif'
+        ]
+      },
     },
   },
   plugins: [],
