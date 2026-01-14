@@ -377,7 +377,7 @@ const MiningCalculator: React.FC = () => {
 
   const getExplorationDescription = () => {
     if (getGrantType() === "Concesiones Mineras de Exploración") {
-      return "🔹 1. Para este tramite se debe otorgar una concesión.\n🔹 2. Las concesiones solo pueden ser otorgadas por INHGEOMIN.\n\n🔍 Se puede otorgar una concesión metálica, no metálica, de gemas o piedras preciosas para realizar actividades de exploración en las siguientes extensiones:\n\n🌎 Territorio terrestre: entre 100 y 1,000 hectáreas.\n🌊 Plataforma marítima continental: entre 100 y 10,000 hectáreas.\n\n🚧 Actividades Permitidas:\n🔸 Preparación de plataformas de exploración\n🔸 Realización de pozos de perforación, calicatas o zanjas\n🔸 Cálculo de reservas y evaluación de rentabilidad\n🔸 Construcción de caminos, vías de acceso y otras infraestructuras auxiliares";
+      return "Para este trámite se debe otorgar una concesión. Las concesiones solo pueden ser otorgadas por INHGEOMIN.\n\nSe puede otorgar una concesión metálica, no metálica, de gemas o piedras preciosas para realizar actividades de exploración en las siguientes extensiones:\n\nTerritorio terrestre: entre 100 y 1,000 hectáreas.\nPlataforma marítima continental: entre 100 y 10,000 hectáreas.\n\nActividades Permitidas:\n• Preparación de plataformas de exploración\n• Realización de pozos de perforación, calicatas o zanjas\n• Cálculo de reservas y evaluación de rentabilidad\n• Construcción de caminos, vías de acceso y otras infraestructuras auxiliares";
     }
     return null;
   };
@@ -617,7 +617,7 @@ const MiningCalculator: React.FC = () => {
                     : 'bg-blue-50/50 border-blue-200 text-blue-900'
                 }`}>
                   <p className="font-medium">
-                    📍 Lugar donde realizar el trámite: {
+                    Lugar donde realizar el trámite: {
                       getTramiteLocation() === 'municipalidades' 
                         ? 'MUNICIPALIDADES' 
                         : 'INHGEOMIN'
@@ -629,13 +629,16 @@ const MiningCalculator: React.FC = () => {
                 {isOroPlacer && formData.production === 'grupo_30m3' && (
                   <div className="mb-4 p-4 rounded-lg border bg-yellow-50/50 border-yellow-200 text-yellow-900">
                     <p className="font-medium">
-                      👥 Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado
+                      Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado
                     </p>
                   </div>
                 )}
 
                 <div className="space-y-5 text-gray-800">
-                  <p className="font-semibold text-gray-900 text-lg">🏷️ Tipo de Derecho Minero: {getGrantType()}</p>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 mb-1">Tipo de Derecho Minero</p>
+                    <p className="font-semibold text-gray-900 text-lg">{getGrantType()}</p>
+                  </div>
                   {getSmallMiningDescription() && (
                     <p className="text-gray-600 leading-relaxed">{getSmallMiningDescription()}</p>
                   )}
@@ -664,25 +667,37 @@ const MiningCalculator: React.FC = () => {
                   {!isDesazolvamiento && !isComercializacion && !isBancoMateriales && !isProcesamiento && (
                     <>
                       <div className="pt-2">
-                        <p className="font-semibold text-gray-900 mb-3">📋 Parámetros seleccionados:</p>
-                        <ul className="list-disc list-inside space-y-2.5 ml-4 text-gray-700">
-                          <li>🔹 Sustancia de interés: {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
-                          <li>🔹 Actividad: {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
+                        <p className="text-sm font-medium text-gray-500 mb-3">Parámetros seleccionados</p>
+                        <div className="space-y-2.5 text-gray-700">
+                          <div>
+                            <span className="font-medium">Sustancia de interés:</span> {materialOptions.find(opt => opt.value === formData.material)?.label}
+                          </div>
+                          <div>
+                            <span className="font-medium">Actividad:</span> {activityOptions.find(opt => opt.value === formData.activity)?.label}
+                          </div>
                           {!isComercializacion && !isProcesamiento && (
                             <>
-                              <li>🔹 Tipo de depósito mineral: {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
-                              <li>🔹 Extensión: {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
-                              <li>🔹 Capacidad de producción: {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
-                              <li>🔹 Método de extracción: {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
+                              <div>
+                                <span className="font-medium">Tipo de depósito mineral:</span> {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}
+                              </div>
+                              <div>
+                                <span className="font-medium">Extensión:</span> {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}
+                              </div>
+                              <div>
+                                <span className="font-medium">Capacidad de producción:</span> {getProductionOptions().find(opt => opt.value === formData.production)?.label}
+                              </div>
+                              <div>
+                                <span className="font-medium">Método de extracción:</span> {extractionOptions.find(opt => opt.value === formData.extraction)?.label}
+                              </div>
                             </>
                           )}
-                        </ul>
+                        </div>
                       </div>
                     </>
                   )}
 
                   <div className="mt-6">
-                    <h4 className="text-lg font-semibold mb-3 text-gray-900">📝 Requisitos Principales:</h4>
+                    <h4 className="text-lg font-semibold mb-3 text-gray-900">Requisitos Principales</h4>
                     {isComercializacion && (
                       <h5 className="text-base font-medium mb-3 text-gray-700">Artículo 43 del Reglamento de la Ley General de Minería</h5>
                     )}
@@ -747,7 +762,7 @@ const MiningCalculator: React.FC = () => {
                 backgroundColor: '#f5f5f5',
                 borderRadius: '5px'
               }}>
-                <p><strong>📍 Lugar donde realizar el trámite: {
+                <p><strong>Lugar donde realizar el trámite: {
                   getTramiteLocation() === 'municipalidades' 
                     ? 'MUNICIPALIDADES' 
                     : 'INHGEOMIN'
@@ -763,11 +778,11 @@ const MiningCalculator: React.FC = () => {
                   backgroundColor: '#fff3cd',
                   borderRadius: '5px'
                 }}>
-                  <p><strong>👥 Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado</strong></p>
+                  <p><strong>Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado</strong></p>
                 </div>
               )}
 
-              <p><strong>🏷️ Tipo de Derecho Minero:</strong> {getGrantType()}</p>
+              <p><strong>Tipo de Derecho Minero:</strong> {getGrantType()}</p>
               {getSmallMiningDescription() && (
                 <p><em>{getSmallMiningDescription()}</em></p>
               )}
@@ -795,16 +810,16 @@ const MiningCalculator: React.FC = () => {
               
               {!isDesazolvamiento && !isComercializacion && !isBancoMateriales && !isProcesamiento && (
                 <>
-                  <p><strong>📋 Parámetros seleccionados:</strong></p>
+                  <p><strong>Parámetros seleccionados:</strong></p>
                   <ul>
-                    <li>🔹 Sustancia de interés: {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
-                    <li>🔹 Actividad: {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
+                    <li>Sustancia de interés: {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
+                    <li>Actividad: {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
                     {!isComercializacion && !isProcesamiento && (
                       <>
-                        <li>🔹 Tipo de depósito mineral: {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
-                        <li>🔹 Extensión: {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
-                        <li>🔹 Capacidad de producción: {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
-                        <li>🔹 Método de extracción: {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
+                        <li>Tipo de depósito mineral: {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
+                        <li>Extensión: {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
+                        <li>Capacidad de producción: {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
+                        <li>Método de extracción: {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
                       </>
                     )}
                   </ul>
@@ -812,7 +827,7 @@ const MiningCalculator: React.FC = () => {
               )}
 
               <div>
-                <h4>📝 Requisitos Principales:</h4>
+                <h4>Requisitos Principales</h4>
                 {isComercializacion && (
                   <h5>Artículo 43 del Reglamento de la Ley General de Minería</h5>
                 )}
