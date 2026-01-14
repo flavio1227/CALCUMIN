@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply antialiased text-gray-800 bg-gray-100;
+    @apply antialiased text-gray-800 bg-gray-50;
     /* iOS specific fixes */
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
@@ -237,6 +237,7 @@ html {
   /* iOS specific fixes */
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  background-color: #F9FAFB; /* NUEVO: gris muy claro | ORIGINAL: #003247 (custom-blue) */
 }
 
 /* Prevent text selection on interactive elements */

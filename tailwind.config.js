@@ -5,8 +5,8 @@ export default {
     extend: {
       colors: {
         custom: {
-          blue: '#003247',
-          yellow: '#FFD700'
+          blue: '#FFFFFF',      // NUEVO: blanco | ORIGINAL: '#003247'
+          yellow: '#1F2937'     // NUEVO: gris oscuro | ORIGINAL: '#FFD700'
         }
       },
     },
