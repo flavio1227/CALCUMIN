@@ -1,12 +1,11 @@
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '../config/firebase';
-
 // URL de redirección si no está autenticado
-const LOGIN_URL = 'https://flavio1227.github.io/Login/';
-const SHELL_URL = 'https://flavio1227.github.io/SIGEM1.1/';
+const LOGIN_URL = import.meta.env.VITE_LOGIN_URL || '/Login/';
+const SHELL_URL = import.meta.env.VITE_SHELL_URL || '/SIGEM1.1/';
 
 // Claves comunes para verificar autenticación en localStorage/sessionStorage
 const AUTH_KEYS = [
+  'sigem_auth_token',
+  'sigem_auth_user',
   'auth_token',
   'authToken',
   'isAuthenticated',
@@ -42,44 +41,8 @@ function hasAuthToken(): boolean {
 }
 
 /**
- * Requiere autenticación usando Firebase Auth
- * @param callback Función a ejecutar si el usuario está autenticado
- * @param redirectTo URL a donde redirigir si no está autenticado (default: LOGIN_URL)
- */
-export function requireAuth(
-  callback: (user: User | null) => void,
-  redirectTo: string = LOGIN_URL
-): void {
-  try {
-    const authInstance = getAuth();
-    
-    onAuthStateChanged(authInstance, (user) => {
-      if (!user) {
-        // Si no hay usuario en Firebase, verificar tokens en storage
-        if (hasAuthToken()) {
-          callback(null);
-          return;
-        }
-        // Redirigir al login
-        window.location.href = redirectTo;
-      } else {
-        callback(user);
-      }
-    });
-  } catch (error) {
-    console.error('Error en Firebase Auth:', error);
-    // Fallback: verificar tokens en storage
-    if (hasAuthToken()) {
-      callback(null);
-    } else {
-      window.location.href = redirectTo;
-    }
-  }
-}
-
-/**
  * Requiere autenticación usando tokens en storage (localStorage/sessionStorage)
- * Útil cuando no se usa Firebase Auth directamente
+ * Útil cuando no hay proveedor de autenticación centralizado
  * @param callback Función a ejecutar si el usuario está autenticado
  * @param redirectTo URL a donde redirigir si no está autenticado (default: SHELL_URL)
  */
@@ -92,7 +55,9 @@ export function requireAuthToken(
   } else {
     // Guardar URL actual para redirigir después del login
     sessionStorage.setItem('redirectAfterLogin', window.location.href);
-    window.location.href = redirectTo;
+    const loginUrl = new URL(redirectTo, window.location.origin);
+    loginUrl.searchParams.set('redirect', window.location.href);
+    window.location.href = loginUrl.toString();
   }
 }
 
@@ -101,18 +66,6 @@ export function requireAuthToken(
  * @returns true si está autenticado, false si no
  */
 export function isAuthenticated(): boolean {
-  // Solo verificar tokens en storage, no usar Firebase para evitar problemas durante el build
+  // Solo verificar tokens en storage
   return hasAuthToken();
-}
-
-/**
- * Obtiene el usuario actual (si está disponible)
- */
-export function getCurrentUser(): User | null {
-  try {
-    const authInstance = getAuth();
-    return authInstance.currentUser;
-  } catch (error) {
-    return null;
-  }
 }

@@ -96,16 +96,12 @@
 @media print {
   @page {
     size: auto;
-    margin: 20mm;
-  }
-
-  title {
-    content: "Titulo minero INHGEOMIN";
+    margin: 6mm;
   }
 
   body {
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background: white !important;
     color: black !important;
   }
@@ -116,10 +112,151 @@
 
   .print-section {
     display: block !important;
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;
+    padding: 0 3mm 0 6mm;
     width: 100%;
     background: white;
+    position: relative;
+  }
+
+  .print-section {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-section *:not(.print-watermark) {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-watermark {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 90%;
+    height: 90%;
+    opacity: 0.14;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    background-image: url('/ESCUDO2026.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: contain !important;
+  }
+
+  .print-watermark-img {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 90%;
+    height: auto;
+    opacity: 0.14;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .print-section > *:not(.print-watermark):not(.print-watermark-img) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .max-w-3xl {
+    max-width: 100% !important;
+  }
+
+  .mx-auto {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .rounded-lg {
+    border-radius: 0 !important;
+  }
+
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-md {
+    box-shadow: none !important;
+  }
+
+  .border,
+  .border-custom-yellow {
+    border: none !important;
+  }
+
+  .bg-custom-blue {
+    background: white !important;
+  }
+
+  .print-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+
+  .print-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 4px;
+  }
+
+  .print-subtitle {
+    font-size: 12px;
+    color: #333;
+  }
+
+
+  .print-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 14px;
+  }
+
+  .print-line {
+    margin: 8px 0;
+  }
+
+  .print-warning {
+    margin: 8px 0;
+  }
+
+  .print-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .print-logo {
+    height: 125px;
+    width: auto;
+    clip-path: none;
+  }
+
+  .print-logo-wrap {
+    overflow: hidden;
+  }
+
+  .print-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .print-interop-icon {
+    width: 22px;
+    height: 22px;
+    color: #111;
+    flex-shrink: 0;
   }
 
   .print-section h3 {
@@ -144,10 +281,11 @@
   .print-section p {
     margin-bottom: 10px;
     color: black;
+    text-align: justify;
   }
 
   .print-section ul {
-    margin: 10px 0 20px 20px;
+    margin: 8px 0 16px 14px;
     list-style-type: disc;
     color: black;
   }
@@ -155,12 +293,47 @@
   .print-section li {
     margin-bottom: 5px;
     color: black;
+    text-align: justify;
   }
 
   .print-section strong {
     font-weight: bold;
     color: black;
   }
+}
+
+.calcumin-watermark {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 90%;
+  height: auto;
+  max-width: 1600px;
+  aspect-ratio: 1 / 1;
+  background-image: url('/ESCUDO2026.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+}
+
+.calcumin-transparent div {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.calculator-shell {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.calculator-shell .bg-custom-blue {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+
+.calculator-shell {
+  background-color: rgba(11, 38, 56, 0.85) !important;
 }
 
 /* Hide print section in normal view */

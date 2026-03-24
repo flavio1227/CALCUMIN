@@ -13,18 +13,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Verificar si viene desde SIGEM1.1 (referrer o parámetros en URL)
-    const referrer = document.referrer;
-    const urlParams = new URLSearchParams(window.location.search);
-    const comesFromSigem = referrer.includes('SIGEM1.1') || referrer.includes('sigem') || urlParams.has('fromSigem');
-    
-    // Si viene desde SIGEM1.1, permitir acceso directamente (SIGEM1.1 ya controla el acceso)
-    if (comesFromSigem) {
-      setIsAuthenticated(true);
-      return;
-    }
-    
-    // Si NO viene desde SIGEM1.1, verificar autenticación con tokens
     if (checkAuth()) {
       setIsAuthenticated(true);
     } else {
@@ -33,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         () => {
           setIsAuthenticated(true);
         },
-        'https://flavio1227.github.io/Login/'
+        import.meta.env.VITE_LOGIN_URL || '/Login/'
       );
     }
   }, []);

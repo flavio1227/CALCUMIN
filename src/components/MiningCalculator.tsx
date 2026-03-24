@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import FormField from './FormField';
-import { Printer, ExternalLink } from 'lucide-react';
+import { Printer, ExternalLink, ArrowLeftRight } from 'lucide-react';
 import QRCode from 'qrcode.react';
 import { 
   materialOptions,
@@ -12,12 +12,25 @@ import {
   productionOptionsPreciousStones,
   extractionOptions,
   extractionZoneOptions,
-  requirementLinks,
   documentRequirements,
   activityDescriptions
 } from '../utils/constants';
 
 const MiningCalculator: React.FC = () => {
+  const topominLogoSrc = `${import.meta.env.BASE_URL}topomin.svg`;
+  const escudoWatermarkSrc = `${import.meta.env.BASE_URL}ESCUDO2026.svg`;
+
+  const municipalLogo = (() => {
+    if (typeof window === 'undefined') return '';
+    try {
+      const stored = localStorage.getItem('sigem_auth_user');
+      if (!stored) return '';
+      const parsed = JSON.parse(stored);
+      return parsed?.municipalidadLogo || '';
+    } catch {
+      return '';
+    }
+  })();
   const [formData, setFormData] = useState({
     extractionZone: '',
     material: '',
@@ -458,28 +471,10 @@ const MiningCalculator: React.FC = () => {
   };
 
   const getRequirementsLink = () => {
-    if (isManualBasico && (isMetallic || isNonMetallic || isPiedrasPreciosas)) {
-      return requirementLinks.artesanal;
+    if (getTramiteLocation() === 'municipalidades') {
+      return 'https://www.inhgeomin.gob.hn/gesti%C3%B3n-municipal/gobiernos-subnacionales';
     }
-    if (isNonMetallic && isExtraccion && isAluvial && formData.hectares === 'hasta_10' && formData.production === 'hasta_100m3' && isMecanizado) {
-      return requirementLinks.pequena_mineria_no_metalica;
-    }
-    if (isNonMetallic && formData.hectares === 'hasta_100' && isManualBasico) {
-      return requirementLinks.artesanal;
-    }
-    if (isNonMetallic && formData.hectares === 'hasta_100' && isMecanizado) {
-      return requirementLinks.pequena_mineria_no_metalica;
-    }
-    if (isOroPlacer) {
-      return 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa';
-    }
-    if (isAutomatizado) {
-      return 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-explotaci%C3%B3n';
-    }
-    if (isManualBasico || isMecanizado) {
-      return 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa';
-    }
-    return requirementLinks[formData.activity as keyof typeof requirementLinks] || requirementLinks.extraccion;
+    return 'https://www.inhgeomin.gob.hn/tramites-y-servicios/tramites-disponibles';
   };
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
@@ -519,7 +514,30 @@ const MiningCalculator: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="bg-custom-blue rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl border border-custom-yellow">
+      <div className="flex justify-center mb-4 no-print w-full">
+        {municipalLogo ? (
+          <div className="flex items-center justify-center gap-4">
+            <img
+              src={topominLogoSrc}
+              alt="INHGEOMIN"
+              className="h-24 w-auto"
+            />
+            <ArrowLeftRight className="w-6 h-6 text-gray-700" />
+            <img
+              src={municipalLogo}
+              alt="Municipalidad"
+              className="h-24 w-auto object-contain"
+            />
+          </div>
+        ) : (
+        <img
+          src={topominLogoSrc}
+          alt="INHGEOMIN"
+          className="h-48 w-auto block mx-auto"
+        />
+        )}
+      </div>
+      <div className="bg-custom-blue rounded-lg shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl border border-custom-yellow calculator-shell">
         <div className="bg-custom-blue py-4 px-6 border-b border-custom-yellow no-print">
           <h2 className="text-2xl font-bold text-custom-yellow text-center">Calculadora de Títulos Mineros</h2>
         </div>
@@ -752,100 +770,104 @@ const MiningCalculator: React.FC = () => {
 
             {/* Print-only section */}
             <div className="print-section">
-              <h3>Resultado del Cálculo</h3>
-              
-              {/* Alerta sobre dónde realizar el trámite para impresión */}
-              <div style={{ 
-                marginBottom: '20px', 
-                padding: '10px', 
-                border: '2px solid #333', 
-                backgroundColor: '#f5f5f5',
-                borderRadius: '5px'
-              }}>
-                <p><strong>Lugar donde realizar el trámite: {
-                  getTramiteLocation() === 'municipalidades' 
-                    ? 'MUNICIPALIDADES' 
-                    : 'INHGEOMIN'
-                }</strong></p>
-              </div>
-
-              {/* Nueva alerta para grupos organizados en impresión */}
-              {isOroPlacer && formData.production === 'grupo_30m3' && (
-                <div style={{ 
-                  marginBottom: '20px', 
-                  padding: '10px', 
-                  border: '2px solid #333', 
-                  backgroundColor: '#fff3cd',
-                  borderRadius: '5px'
-                }}>
-                  <p><strong>Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado</strong></p>
+              <img
+                src={escudoWatermarkSrc}
+                alt=""
+                aria-hidden="true"
+                className="print-watermark-img"
+              />
+              <div className="print-header">
+                <div className="print-logo-wrap">
+                  {municipalLogo ? (
+                    <div className="print-logo-row">
+                      <img src={topominLogoSrc} alt="INHGEOMIN" className="print-logo" />
+                      <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        className="print-interop-icon"
+                      >
+                        <path
+                          d="M16 3l5 5-5 5M21 8H8M8 21l-5-5 5-5M3 16h13"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <img src={municipalLogo} alt="Municipalidad" className="print-logo" />
+                    </div>
+                  ) : (
+                    <img src={topominLogoSrc} alt="INHGEOMIN" className="print-logo" />
+                  )}
                 </div>
+              </div>
+              <div className="print-title">Resultado del Cálculo</div>
+              <div className="print-subtitle">INHGEOMIN • SIGEM</div>
+
+              <p className="print-line">
+                <strong>Lugar donde realizar el trámite:</strong>{' '}
+                {getTramiteLocation() === 'municipalidades' ? 'MUNICIPALIDADES' : 'INHGEOMIN'}
+              </p>
+
+              {isOroPlacer && formData.production === 'grupo_30m3' && (
+                <p className="print-warning">
+                  <strong>Para producción de más de 30 metros cúbicos se necesita tener un grupo legalmente organizado</strong>
+                </p>
               )}
 
-              <p><strong>Tipo de Derecho Minero:</strong> {getGrantType()}</p>
-              {getSmallMiningDescription() && (
-                <p><em>{getSmallMiningDescription()}</em></p>
-              )}
-              {getExplorationDescription() && (
-                <p><em>{getExplorationDescription()}</em></p>
-              )}
-              {getExploitationDescription() && (
-                <p><em>{getExploitationDescription()}</em></p>
-              )}
-              {getArtesanalDescription() && (
-                <p><em>{getArtesanalDescription()}</em></p>
-              )}
+              <p className="print-line">
+                <strong>Tipo de Derecho Minero:</strong> {getGrantType()}
+              </p>
+              {getSmallMiningDescription() && <p><em>{getSmallMiningDescription()}</em></p>}
+              {getExplorationDescription() && <p><em>{getExplorationDescription()}</em></p>}
+              {getExploitationDescription() && <p><em>{getExploitationDescription()}</em></p>}
+              {getArtesanalDescription() && <p><em>{getArtesanalDescription()}</em></p>}
               {isDesazolvamiento && (
                 <p><em>Limpiar ríos o cauces para prevenir inundaciones, bajo normas técnicas.</em></p>
               )}
-              {isBancoMateriales && (
-                <p><em>{activityDescriptions.banco_materiales}</em></p>
-              )}
+              {isBancoMateriales && <p><em>{activityDescriptions.banco_materiales}</em></p>}
               {isProcesamiento && (
                 <p><em>La minera de beneficio para realizar procesos físicos, químicos y/o fisicoquímicos, que se realizan para extraer o concentrar las partes valiosas de un agregado de minerales metálicos, no metálicos, gemas y/o para purificar, fundir o refinar metales.<br/><br/>La concesión de beneficio es obligatoria para aquellos que, no siendo titulares de una concesión minera de explotación, capten minerales o productos intermedios, minerales de concesionarios y terceros con el fin de beneficiarlos.</em></p>
               )}
               {isComercializacion && (
                 <p><em>El Registro de Comercializador de Mineriales a fin de poder realizar actividades de compra y venta de minerales metálicos, no metálicos, de gemas o piedras preciosas, para transformarlos, beneficiarlos, distribuirlos o exportarlos.</em></p>
               )}
-              
-              {!isDesazolvamiento && !isComercializacion && !isBancoMateriales && !isProcesamiento && (
-                <>
-                  <p><strong>Parámetros seleccionados:</strong></p>
-                  <ul>
-                    <li>Sustancia de interés: {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
-                    <li>Actividad: {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
-                    {!isComercializacion && !isProcesamiento && (
-                      <>
-                        <li>Tipo de depósito mineral: {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
-                        <li>Extensión: {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
-                        <li>Capacidad de producción: {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
-                        <li>Método de extracción: {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
-                      </>
-                    )}
-                  </ul>
-                </>
+
+              <div className="print-section-title">Parámetros seleccionados</div>
+              {!isDesazolvamiento && !isComercializacion && !isBancoMateriales && !isProcesamiento ? (
+                <ul>
+                  <li><strong>Sustancia de interés:</strong> {materialOptions.find(opt => opt.value === formData.material)?.label}</li>
+                  <li><strong>Actividad:</strong> {activityOptions.find(opt => opt.value === formData.activity)?.label}</li>
+                  {!isComercializacion && !isProcesamiento && (
+                    <>
+                      <li><strong>Tipo de depósito mineral:</strong> {extractionZoneOptions.find(opt => opt.value === formData.extractionZone)?.label}</li>
+                      <li><strong>Extensión:</strong> {hectaresOptions.find(opt => opt.value === formData.hectares)?.label}</li>
+                      <li><strong>Capacidad de producción:</strong> {getProductionOptions().find(opt => opt.value === formData.production)?.label}</li>
+                      <li><strong>Método de extracción:</strong> {extractionOptions.find(opt => opt.value === formData.extraction)?.label}</li>
+                    </>
+                  )}
+                </ul>
+              ) : (
+                <p>Este trámite no requiere parámetros adicionales.</p>
               )}
 
-              <div>
-                <h4>Requisitos Principales</h4>
-                {isComercializacion && (
-                  <h5>Artículo 43 del Reglamento de la Ley General de Minería</h5>
-                )}
-                <ul>
-                  {getRequirements().map((req, index) => (
-                    <li key={index}>{req}</li>
-                  ))}
-                </ul>
-              </div>
+              <div className="print-section-title">Requisitos principales</div>
+              {isComercializacion && (
+                <div className="print-subtitle">Artículo 43 del Reglamento de la Ley General de Minería</div>
+              )}
+              <ul>
+                {getRequirements().map((req, index) => (
+                  <li key={index}>{req}</li>
+                ))}
+              </ul>
 
-              <div className="flex items-center gap-4 mt-6">
-                <div className="bg-white p-2 rounded-lg shadow-md">
-                  <QRCode
-                    value={getRequirementsLink()}
-                    size={100}
-                    level="H"
-                  />
-                </div>
+              <div className="print-footer">
+                <QRCode
+                  value={getRequirementsLink()}
+                  size={96}
+                  level="H"
+                />
                 <p>Escanee el código QR para ver los requisitos completos en línea</p>
               </div>
             </div>

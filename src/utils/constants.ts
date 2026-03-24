@@ -56,17 +56,6 @@ export const extractionZoneOptions = [
   { value: 'plataforma_maritima', label: 'Plataforma Marítima Continental' }
 ];
 
-export const requirementLinks = {
-  prospeccion: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-exploraci%C3%B3n',
-  extraccion: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-explotaci%C3%B3n',
-  comercializacion: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/registro-de-comercializador-de-minerales',
-  procesamiento: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/concesi%C3%B3n-de-beneficio',
-  desazolvamiento: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/proyecto-de-desazolvamiento',
-  banco_materiales: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/proyectos-de-banco-de-materiales',
-  artesanal: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa',
-  pequena_mineria_no_metalica: 'https://www.inhgeomin.gob.hn/tr%C3%A1mites-y-servicios/calcumin/permisos-de-peque%C3%B1a-miner%C3%ADa'
-};
-
 export const activityDescriptions = {
   prospeccion: 'Actividades de búsqueda y evaluación de yacimientos minerales según la Ley General de Minería',
   extraccion: 'Extracción de minerales del suelo o subsuelo bajo normativa vigente',
